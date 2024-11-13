@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import CompanyListItem from './CompanyListItem';
 import { fetchCompanies, mockDeleteRequest } from '@/utils/api';
-import { Company } from '@/types';
+import { Company, DeleteResponse } from '@/types';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
 
@@ -45,7 +45,10 @@ const CompanyList: React.FC = () => {
   const handleSelect = useCallback((id: number) => {
     setSelectedCompanies(prev => {
       const newSet = new Set(prev);
-      newSet.has(id) ? newSet.delete(id) : newSet.add(id);
+      if(newSet.has(id))
+        newSet.delete(id);
+      else
+        newSet.add(id);
       return newSet;
     });
   }, []);
@@ -53,7 +56,8 @@ const CompanyList: React.FC = () => {
   const handleDeleteRequest = useCallback(async () => {
     setDeleting(true);
     try {
-      const { message }: any = await mockDeleteRequest(selectedCompanies);
+      const response: DeleteResponse = await mockDeleteRequest(selectedCompanies);
+      const { message } = response;
       if (message === 'success') {
         setCompanies(prev => prev.filter(company => !selectedCompanies.has(company.id)));
         setSelectedCompanies(new Set());

@@ -1,3 +1,4 @@
+import { DeleteResponse } from '@/types';
 import axios from 'axios';
 
 export const fetchCompanies = async (page: number) => {
@@ -5,7 +6,7 @@ export const fetchCompanies = async (page: number) => {
   return response.data;
 };
 
-export const mockDeleteRequest = async (selectedCompanies: Set<number>) => {
+export const mockDeleteRequest = async (selectedCompanies: Set<number>): Promise<DeleteResponse> => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({ message: 'success', data: selectedCompanies });
