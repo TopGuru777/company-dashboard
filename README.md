@@ -25,7 +25,7 @@ cd company-dashboard
 Install dependencies:
 
 ```bash
-npm install
+npm install --legacy-peer-deps
 ```
 
 ## Running the Development Server
